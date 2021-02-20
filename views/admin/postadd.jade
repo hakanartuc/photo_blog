@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div
+  form(action='/admin/post/add',method='post', enctype="multipart/form-data")
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='photo') dosya
+           input(id='photo',name='photo',type='file')
+           label(for='title') başlık
+           input(id='title',name='title',type='text')
+           label(for='description') içerik
+           textarea(id='description',name='description')
+           label(for='date') tarih
+           textarea(id='date',name='date' type="text")
+      input(type='submit',value='Sign Up',data-transition='fade', data-theme='c')

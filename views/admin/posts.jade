@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  div
+   table.table.table-hover
+    thead
+      tr: th Posts
+    tbody
+      each post in posts
+        tr
+          td=post.title
+          td!=post.description
+          td=post.imagePath
+          td=moment.unix(post.date).format('DD.MM.YYYY')
+         
