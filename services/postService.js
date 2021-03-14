@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3');
-const db = new Database('photoblog_test.db', { verbose: console.log });
+const db = new Database(global.gConfig.database, { verbose: console.log });
 var moment = require('moment'); 
 
 class PostService{
