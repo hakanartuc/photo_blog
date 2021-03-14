@@ -6,7 +6,7 @@ const postService = require('../../services/postService');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-    res.render('admin/index', {title: 'Admin'});
+    res.render('admin/index', {title: 'Admin',layout: 'admin'});
   });
 
   router.get('/post/add', function(req,res){
