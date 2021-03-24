@@ -3,14 +3,14 @@ const db = new Database(global.gConfig.database, { verbose: console.log });
 
 class TagService {
 
-    static Create(tag) {
+    Create(tag) {
 
         if (tag.name == '')
             return { success: false, message: "Etiket adı gereklidir." };
 
 
-        const isExists = db.prepare('SELECT COUNT(*) FROM tag where name = ? ').get(tag.name).count();
-        if (isExists > 0)
+        const row = db.prepare('SELECT COUNT(*) as count FROM tag where name = ? ').get(tag.name);
+        if (row.count > 0)
             return { success: false, message: "Bu etiket zaten ekli." };
 
 
@@ -19,19 +19,19 @@ class TagService {
         return { success: true, message: "etiket eklendi." };
     }
 
-    static Update(tag) {
+    Update(tag) {
 
         if (tag.name == '')
             return { success: false, message: "Etiket adı gereklidir." };
 
 
-        const isExists = db.prepare('SELECT COUNT(*) FROM tag where name = @name and id != @id ')
+        const row = db.prepare('SELECT COUNT(*) as count FROM tag where name = @name and id != @id ')
             .get({
                 id: tag.id,
                 name: tag.name
-            }).count();
+            });
 
-        if (isExists > 0)
+        if (row.count > 0)
             return { success: false, message: "Bu etiket zaten ekli." };
 
 
@@ -44,7 +44,7 @@ class TagService {
         return { success: true, message: "Etiket güncellendi." };
     }
 
-    static Delete(id) {
+    Delete(id) {
 
         if (!id || id < 1)
             return { success: false, message: "Böyle bir etiket bulunamadı." };

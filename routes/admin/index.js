@@ -29,7 +29,7 @@ router.post('/post/add', (req, res) => {
 
     var post = {
       ...req.body,
-      imagePath: photo.name,
+      imageName: photo.name,
     };
 
     postService.insert(post);

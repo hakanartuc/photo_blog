@@ -3,14 +3,14 @@ const db = new Database(global.gConfig.database, { verbose: console.log });
 
 class CategoryService {
 
-    static Create(category) {
+    Create(category) {
 
         if (category.name == '')
             return { success: false, message: "Bu kategori adı gereklidir." };
 
 
-        const isExists = db.prepare('SELECT COUNT(*) FROM category where name = ? ').get(category.name).count();
-        if (isExists > 0)
+        const row = db.prepare('SELECT COUNT(*) as count FROM category where name = ? ').get(category.name);
+        if (row.count > 0)
             return { success: false, message: "Bu kategori zaten ekli." };
 
 
@@ -21,19 +21,19 @@ class CategoryService {
         return { success: true, message: "Kategori eklendi." };
     }
 
-    static Update(category) {
+     Update(category) {
 
         if (category.name == '')
             return { success: false, message: "Bu kategori adı gereklidir." };
 
 
-        const isExists = db.prepare('SELECT COUNT(*) FROM category where name = @name and id != @id ')
+        const row = db.prepare('SELECT COUNT(*) as count FROM category where name = @name and id != @id ')
             .get({
                 id: category.id,
                 name: category.name
-            }).count();
+            });
 
-        if (isExists > 0)
+        if (row.count > 0)
             return { success: false, message: "Bu kategori zaten ekli." };
 
 
@@ -45,15 +45,15 @@ class CategoryService {
         return { success: true, message: "Kategori güncellendi." };
     }
 
-    static Delete(id) {
+    Delete(id) {
 
         if (!id || id < 1)
             return { success: false, message: "Böyle bir kategori bulunamadı." };
 
-        const isExists = db.prepare('SELECT COUNT(*) FROM post_category where category_id = ?')
-            .get(category.id).count();
+        const row = db.prepare('SELECT COUNT(*) as count FROM post_category where category_id = ?')
+            .get(category.id);
 
-        if (isExists > 0)
+        if (row.count > 0)
             return { success: false, message: "Bu kategoriye bağlı postlar olduğundan silinemez." };
 
 
